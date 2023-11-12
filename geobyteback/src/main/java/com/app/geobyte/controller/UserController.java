@@ -1,0 +1,16 @@
+/**
+ * 
+ */
+package com.app.geobyte.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 
+ */
+@RestController
+public class UserController {
+	
+	public void registerUser() {}
+
+}
