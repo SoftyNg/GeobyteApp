@@ -15,7 +15,7 @@ public class UserModel {
 	//require parameters/fields as below:
 	
 	
-	@Id
+	@Id//convert to primary ID in the database table
 	private int id;
 	private int name;
 	private String email;

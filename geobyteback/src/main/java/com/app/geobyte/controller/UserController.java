@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.geobyte.model.LocationModel;
 import com.app.geobyte.model.UserModel;
 import com.app.geobyte.viewservice.UserService;
 
@@ -23,6 +24,8 @@ public class UserController {
 	private UserService service;
 	
 	
+	
+	//Registration function	
 	@PostMapping("/registeruser")
 	@CrossOrigin("origin = http://localhost:4200")
 	  public UserModel register(@RequestBody UserModel userreg) throws Exception {
@@ -42,6 +45,8 @@ public class UserController {
 		  return userObj;
 	  }
 	
+		
+	//login function
 	@PostMapping("/login")
 	@CrossOrigin("origin = http://localhost:4200")
 	public UserModel loginUser(@RequestBody UserModel userlogin) throws Exception {
@@ -57,5 +62,46 @@ public class UserController {
 		}		  
 		  return loginobj;		
 	}
+	
+	
+	
+	//save location function	
+		@PostMapping("/registerlocation")
+		@CrossOrigin("origin = http://localhost:4200")
+		  public LocationModel saveLocation(@RequestBody LocationModel newLocation) throws Exception {
+			
+			  String tempName = newLocation.getLocationName();//assign temporary location name to object
+			  
+			  if (tempName != null && !"".equals(tempName)) {
+				LocationModel locationobj = service.fetchLocationName(tempName);
+				if (locationobj != null) {
+					throw new Exception("User with this email "+ locationobj+ "Already exist");
+				}
+			}//checking and comparing entered email value with database stored value
+			  
+			  LocationModel locationobj = null;
+			  locationobj = service.saveLocation(locationobj);
+			  
+			  return locationobj;
+		  }
+		
+		
+		//login function
+		@PostMapping("/view_location")
+		@CrossOrigin("origin = http://localhost:4200")
+		public LocationModel viewLocations(@RequestBody LocationModel view ) throws Exception {
+			
+			    view = null;
+			                
+			if (view != null) {
+				 //view = service.fetchAllLocation(view);
+				
+				if (view == null) {
+					
+				}
+			}		  
+			  return view;		
+		}
+		
 
 }
