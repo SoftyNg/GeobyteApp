@@ -89,19 +89,19 @@ public class UserController {
 		//login function
 		@PostMapping("/view_location")
 		@CrossOrigin("origin = http://localhost:4200")
-		public LocationModel viewLocations(@RequestBody LocationModel view ) throws Exception {
-			
-			    view = null;
-			                
+		public LocationModel viewLocation(@RequestBody LocationModel view) throws Exception {
+			 String tempView = view.getLocationName();
+			LocationModel fetchview = null;
 			if (view != null) {
-				 //view = service.fetchAllLocation(view);
+				 fetchview = service.fetchLocationName(tempView);
 				
-				if (view == null) {
-					
+				if (fetchview == null) {
+					throw new Exception("Cannot find this location on our database");
 				}
 			}		  
-			  return view;		
+			  return fetchview;		
 		}
+		
 		
 
 }
