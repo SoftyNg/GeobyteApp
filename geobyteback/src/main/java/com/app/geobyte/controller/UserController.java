@@ -3,6 +3,10 @@
  */
 package com.app.geobyte.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.geobyte.model.LocationModel;
+import com.app.geobyte.model.PairOfLocations;
 import com.app.geobyte.model.UserModel;
 import com.app.geobyte.viewservice.UserService;
+import com.app.geobyte.model.*;
 
 
 /**
@@ -101,6 +107,44 @@ public class UserController {
 			}		  
 			  return fetchview;		
 		}
+		
+		public int cheapestCostOfDelivery(int n, int[][] flights, int src, int dst, int k) {
+	        ArrayList<ArrayList<PairOfLocations>>adj=new ArrayList<>();
+	        for(int i=0;i<n;i++){
+	            adj.add(new ArrayList<>());
+	        }
+
+	        for(int i=0;i<flights.length;i++){
+	            adj.get(flights[i][0]).add(new PairOfLocations(flights[i][1],flights[i][2]));
+	        }
+
+	        int cost[]=new int[n];
+	        for(int i=0;i<n;i++){
+	            cost[i]=(int)1e9;
+	        }
+
+	        Queue<Tuple>q=new LinkedList<>();
+	        q.add(new Tuple(0,src,0));
+
+	        while(!q.isEmpty()){
+	            int steps=q.peek().first;
+	            int node=q.peek().second;
+	            int val=q.peek().third;
+	            q.poll();
+	            if(steps>k) continue;
+	            for(PairOfLocations e:adj.get(node)){
+	                int adjNode=e.x;
+	                int edw=e.y;
+
+	                if(edw+val<cost[adjNode] && steps<=k){
+	                    q.add(new Tuple(steps+1,adjNode,edw+val));
+	                    cost[adjNode]=edw+val;
+	                }
+	            }
+	        }
+	        if(cost[dst]==1e9) return -1;
+	        return cost[dst];
+	    }
 		
 		
 
